@@ -29,10 +29,10 @@ WELCOME_CHAT_IDS = [ADMIN_USER_ID]
 
 # ================== OkayPay API 配置 ==================
 API_URL = 'https://api.okaypay.me/shop/'
-shop_id = "34721"
-shop_token = "9d6eikQToUqx5BsEG1ObSchWY04w7Zan"
-NAME = "乱天1"
-bot_username = "ghfjk520bot"
+shop_id = "34543"
+shop_token = "8fkGUXg5BszGHK1MPb3SFhWpYLt2Jwa"
+NAME = "商品购买"
+bot_username = "jklgf564bot"
 
 # 数据文件路径
 BALANCE_FILE = "user_balances.json"
