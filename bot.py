@@ -34,7 +34,7 @@ API_URL = 'https://api.okaypay.me/shop/'
 shop_id = "34543"
 shop_token = "8fkGUXg5BszGHK1MPb3SFhWpYLt2Jwa"
 NAME = "商品购买"
-bot_username = "jklgf564bot"
+bot_username = "XIAOCIVBBOT"
 
 # 数据文件路径
 BALANCE_FILE = "user_balances.json"
