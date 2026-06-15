@@ -356,7 +356,7 @@ def get_main_reply_keyboard(is_admin: bool = False) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(buttons, resize_keyboard=True)
 
 def get_product_categories_keyboard(is_admin: bool = False) -> InlineKeyboardMarkup:
-    """动态分类键盘 - 使用分类ID"""
+    """动态分类键盘 - 加号用于添加新分类"""
     buttons = []
     
     for cat_id, cat_name in categories.items():
@@ -370,10 +370,14 @@ def get_product_categories_keyboard(is_admin: bool = False) -> InlineKeyboardMar
         if is_admin:
             buttons.append([
                 InlineKeyboardButton(f"📁 {cat_name}{stock_text}", callback_data=f"cat_{cat_id}"),
-                InlineKeyboardButton("➕", callback_data=f"add_product_to_{cat_id}")
+                InlineKeyboardButton("➕", callback_data="add_category")  # ✅ 点击加号 = 添加新分类
             ])
         else:
             buttons.append([InlineKeyboardButton(f"📁 {cat_name}{stock_text}", callback_data=f"cat_{cat_id}")])
+
+    # 管理员底部快捷入口
+    if is_admin:
+        buttons.append([InlineKeyboardButton("📁 管理分类", callback_data="manage_categories")])
 
     buttons.append([InlineKeyboardButton("🏠 主菜单", callback_data="main_menu")])
     return InlineKeyboardMarkup(buttons)
@@ -799,10 +803,10 @@ async def handle_all_messages(update: Update, context: ContextTypes.DEFAULT_TYPE
         text_msg = "📋 *购买记录*\n\n" + "\n".join(user_orders[-10:]) if user_orders else "📋 暂无购买记录"
         await update.message.reply_text(text_msg, parse_mode="Markdown")
     elif text == "📞 联系客服":
-        await update.message.reply_text(f"👤 *联系客服*\n\n@nbbv354", parse_mode="Markdown")
+        await update.message.reply_text(f"👤 *联系客服*\n\n@apl520", parse_mode="Markdown")
     elif text == "⚙️ 管理面板" and is_admin_user:
         await update.message.reply_text(
-            "⚙️ *管理员面板*\n\n选择操作：",
+            "⚙️ *管理员面板*\n\n尊敬的管理员请进行操作当前版本v3：",
             reply_markup=get_admin_panel_keyboard(),
             parse_mode="Markdown"
         )
@@ -827,7 +831,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     # ========== 管理面板 ==========
     if data == "admin_panel" and is_admin_user:
         await query.edit_message_text(
-            "⚙️ *管理员面板*\n\n选择操作：",
+            "⚙️ *管理员面板*\n\n尊敬的管理员请进行操作当前版本v3：",
             reply_markup=get_admin_panel_keyboard(),
             parse_mode="Markdown"
         )
@@ -1265,7 +1269,7 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     # ========== 用户端 ==========
     if data == "contact_admin":
         await query.edit_message_text(
-            f"👤 *联系客服*\n\n@nbbv354",
+            f"👤 *联系客服*\n\n@apl520",
             reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 返回", callback_data="main_menu")]]),
             parse_mode="Markdown"
         )
