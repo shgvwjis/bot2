@@ -48,15 +48,15 @@ RECHARGE_ORDERS_FILE = "recharge_orders.json"
 
 # ================== 固定分类（使用ID映射） ==================
 FIXED_CATEGORIES = {
-    "cat_baozihao": "🐆 各国豹子号",
-    "cat_huanbang": "🔄 各国换绑注册",
-    "cat_jiechi": "🎯 各国劫持账号",
-    "cat_shuangxiang": "📞 各国双向账号"
+    "cat_baozihao": " 各国豹子号",
+    "cat_huanbang": " 各国换绑注册",
+    "cat_jiechi": " 各国劫持账号",
+    "cat_shuangxiang": " 各国双向账号"
 }
 
 # 菜单按钮列表（防止误保存）
 MENU_BUTTONS = [
-    "📦 自助购买",
+    "😡 自助购买",
     "💰 我的余额",
     "💎 充值余额",
     "📋 购买记录",
