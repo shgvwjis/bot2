@@ -232,7 +232,7 @@ def add_cards_bulk(product_key: str, card_list: List[str]) -> int:
         added = 0
         for card in card_list:
             card = card.strip()
-            if card and card not in MENU_BUTTONS and card not in existing_cards:
+            if card and card not in existing_cards:
                 cards[product_key].append({"card": card, "used": False})
                 existing_cards.add(card)
                 added += 1
@@ -314,7 +314,7 @@ async def get_shop_name(context: ContextTypes.DEFAULT_TYPE) -> str:
 # ================== 欢迎消息 ==================
 def get_welcome_message(admin_name: str) -> str:
     return (
-        f"🌈欢迎光临{safe_name}自助卖号机器人 \n\n"
+        f"🌈欢迎光临{admin_name}自助卖号机器人 \n\n"
         "TG账号自助购买 \n\n"
         "1、请先少量购买测试，合适可继续购买\n\n"
         "2、购买后第一时间检测是否死号，如帐号有问题请十分钟内联系我处理，包售后，超时不售后\n\n"
@@ -516,6 +516,11 @@ async def handle_all_messages(update: Update, context: ContextTypes.DEFAULT_TYPE
     user_id = str(update.effective_user.id)
     text = update.message.text
     is_admin_user = is_admin(update.effective_user.id)
+    
+    # 添加调试日志
+    logger.info(f"收到消息: {text}, 用户: {user_id}, 是否管理员: {is_admin_user}")
+    logger.info(f"当前状态: awaiting_product_info={context.user_data.get('awaiting_product_info')}, "
+                f"awaiting_stock={context.user_data.get('awaiting_stock')}")
 
     # ========== 管理员编辑分类名称 ==========
     if context.user_data.get('editing_category') and is_admin_user:
@@ -624,7 +629,7 @@ async def handle_all_messages(update: Update, context: ContextTypes.DEFAULT_TYPE
             return
 
         if text and text != "跳过":
-            lines = [line.strip() for line in text.split('\n') if line.strip() and line.strip() not in MENU_BUTTONS]
+            lines = [line.strip() for line in text.split('\n') if line.strip()]
             added = add_cards_bulk(product_key, lines)
             current_stock = get_product_stock(product_key)
 
@@ -787,6 +792,9 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     data = query.data
     user_id = str(query.from_user.id)
     is_admin_user = is_admin(query.from_user.id)
+    
+    # 添加调试日志
+    logger.info(f"收到回调: {data}, 用户: {user_id}")
 
     # ========== 基础导航 ==========
     if data == "noop":
@@ -1476,7 +1484,7 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
             await update.message.reply_text(" 无法识别文件编码，请使用UTF-8或GBK编码保存")
             return
 
-        lines = [line.strip() for line in content.split('\n') if line.strip() and line.strip() not in MENU_BUTTONS]
+        lines = [line.strip() for line in content.split('\n') if line.strip()]
         product_key = context.user_data['awaiting_stock']
         prod = safe_product_get(product_key)
 
